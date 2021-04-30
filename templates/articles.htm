@@ -1,0 +1,46 @@
+{% extends "layout.htm" %}
+
+{% block body %}
+
+<h2>Makaleler</h2>
+<hr>
+{% if allarticles %}
+
+    <form>
+    {% csrf_token %}
+    <div>
+    <input type="text" name="keyword" class="input-sm" maxlength="64" placeholder="Search" />
+    <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    </form>
+
+  {% for article in allarticles %}
+
+    <div class="row">
+      <div class="col-lg-12">
+        <a href="{% url 'article:detail' article.id %}"><h2 class="mt-4">{{article.title}}</h2></a>
+        <p class="lead">
+        by {{article.author.username}}
+        </p>
+        <hr>
+        <p>{{article.created_date}}</p>
+        <hr>
+        {% comment %} {% if article.article_image %}
+        <a href="/articles/article/{{article.id}}"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt=""></a>
+        {% else %}
+        {% endif %}
+        <hr>
+        <p class="lead">{{article.content|safe|truncatewords:500}}</p>
+        <hr> {% endcomment %}
+      </div>
+    </div>
+
+  {% endfor %}
+
+{% else %}
+<div class="alert alert-warning">
+  Makale bulunamadı.
+</div>
+{% endif %}
+
+{% endblock body %}
